@@ -336,7 +336,7 @@ def main():
     
     # Sidebar
     with st.sidebar:
-        st.image("./data/Logo.png")
+        st.image("./data/Logo2.png")
         st.markdown("---")
         
         st.subheader("🔧 Paramètres")
@@ -360,7 +360,7 @@ def main():
         """, unsafe_allow_html=True)
     
     # Main content
-    st.image("./data/Logo.png", width=300)
+    st.image("./data/Logo2.png", width=300)
     
     # Onglets
     tab1, tab2, tab3 = st.tabs(["🏠 Accueil", "🔍 Détection", "📧 Gmail"])
