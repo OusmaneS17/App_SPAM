@@ -336,7 +336,7 @@ def main():
     
     # Sidebar
     with st.sidebar:
-        st.image("./data/Logo.png", use_column_width=True)
+        st.image("./data/Logo.png")
         st.markdown("---")
         
         st.subheader("🔧 Paramètres")
