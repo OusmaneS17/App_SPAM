@@ -88,7 +88,7 @@ def load_models():
         vectorizer = joblib.load('./model/vectorizer (1).joblib')
         models = {
             "🧠 Naive Bayes": joblib.load('./model/nb.joblib'),
-            "⚡ SVM": joblib.load('./model/nb.joblib'),
+            "⚡ SVM": joblib.load('./model/svm_model.joblib'),
         }
         return vectorizer, models
     except FileNotFoundError as e:
@@ -123,7 +123,7 @@ def clean_text(text: str) -> str:
     
     return ' '.join(words)
 
-def analyze_message_features(message: str) -> Dict:
+def analyse_du_message(message: str) -> Dict:
     """Analyse des caractéristiques du message"""
     features = {
         'Longueur': len(message),
@@ -137,7 +137,7 @@ def analyze_message_features(message: str) -> Dict:
     }
     return features
 
-def get_model_confidence(model, vectorized_message) -> float:
+def Niveau_confiance(model, vectorized_message) -> float:
     """Calcul de la confiance du modèle"""
     if hasattr(model, 'predict_proba'):
         proba = model.predict_proba(vectorized_message)[0]
@@ -152,8 +152,8 @@ def get_model_confidence(model, vectorized_message) -> float:
 class SpamClassifier:
     def __init__(self, models):
         self.vectorizer, self.models = models
-        self.labels = {"spam": "Message indésirable", "ham": "Message légitime"}
-        self.colors = {"spam": "#FF6B6B", "ham": "#4ECDC4"}
+        self.labels = {"spam": "SPAMm", "ham": "Email correct"}
+        self.colors = {"spam": "#6B1D1D", "ham": "#095312"}
         self.icons = {"spam": "🚫", "ham": "✅"}
 
     def train(self, emails, labels):
@@ -168,7 +168,7 @@ class SpamClassifier:
         predictions = {}
         for model_name, model in self.models.items():
             pred = model.predict(vectorized)[0]
-            confidence = get_model_confidence(model, vectorized)
+            confidence = Niveau_confiance(model, vectorized)
             predictions[model_name] = (pred, confidence)
         
         return predictions
@@ -336,7 +336,7 @@ def main():
     
     # Sidebar
     with st.sidebar:
-        #st.image("https://via.placeholder.com/150x50?text=SpamSenegal", use_column_width=True)
+        st.image("./data/Logo.png", use_column_width=True)
         st.markdown("---")
         
         st.subheader("🔧 Paramètres")
@@ -360,7 +360,7 @@ def main():
         """, unsafe_allow_html=True)
     
     # Main content
-    #st.image("https://via.placeholder.com/800x150?text=SpamSenegal+Advanced+Spam+Detection", use_column_width=True)
+    st.image("./data/Logo.png", width=300)
     
     # Onglets
     tab1, tab2, tab3 = st.tabs(["🏠 Accueil", "🔍 Détection", "📧 Gmail"])
@@ -380,7 +380,7 @@ def main():
                 with st.spinner("Analyse en cours..."):
                     cleaned_text = clean_text(email_text)
                     predictions = classifier.predict(email_text)
-                    features = analyze_message_features(email_text)
+                    features = analyse_du_message(email_text)
                     
                     # Affichage des résultats
                     st.markdown("---")
@@ -393,11 +393,11 @@ def main():
                             st.markdown(
                                 f"""
                                 <div class="metric-card {'spam' if label == 'spam' else 'ham'}">
-                                    <h3>{model_name}</h3>
-                                    <div style="font-size: 2em; text-align: center;">
+                                    <h3 style="color: #184652;">{model_name}</h3>
+                                    <div style="font-size: 2em; text-align: center; color: #184652;">
                                         {classifier.icons[label]} {classifier.labels[label]}
                                     </div>
-                                    <div style="text-align: center; font-size: 1.5em; margin: 10px 0;">
+                                    <div style="text-align: center; font-size: 1.5em; margin: 10px 0;color: #184652;">
                                         {confidence:.0%} de confiance
                                     </div>
                                 </div>
@@ -444,7 +444,7 @@ def main():
                             
                             # Bouton pour voir le détail
                             if st.button("Analyse détaillée", key=f"detail_{i}"):
-                                features = analyze_message_features(email_msg['raw'])
+                                features = analyse_du_message(email_msg['raw'])
                                 show_feature_analysis(features)
                                 
                                 # Affichage du contenu
