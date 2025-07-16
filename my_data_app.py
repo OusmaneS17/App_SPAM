@@ -88,7 +88,7 @@ def load_models():
         vectorizer = joblib.load('./model/vectorizer (1).joblib')
         models = {
             "🧠 Naive Bayes": joblib.load('./model/nb.joblib'),
-            "⚡ SVM": joblib.load('./model/svm_model.joblib'),
+            "⚡ SVM": joblib.load('./model/nb.joblib'),
         }
         return vectorizer, models
     except FileNotFoundError as e:
